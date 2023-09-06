@@ -5,6 +5,7 @@ using UnityEngine;
 
 public class Range_Finder{
     
+    
     public Tile_Overlay GetAdjacentTile ( Names.direction_name direction, Tile_Overlay start_tile ){
 
         Vector2Int new_location = start_tile.grid2D_location + Tiles_Manager.Instance.direction[direction];

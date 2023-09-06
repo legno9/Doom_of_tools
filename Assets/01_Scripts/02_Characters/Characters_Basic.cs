@@ -35,16 +35,21 @@ public class Characters_Basic : MonoBehaviour
         StartCoroutine(SetCharactersStartTile());  
     } 
 
-    IEnumerator SetCharactersStartTile(){
-        
-        yield return null;
-    
-        if (active_tile == null){ //Set the start tile of the characters
+    IEnumerator SetCharactersStartTile() {
+         yield return new WaitForFixedUpdate();
+        while (active_tile == null) {
+
+            RaycastHit2D start_hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.zero);
+
+            if (start_hit.collider != null) {
+                
+                Tile_Overlay start_tile = start_hit.transform.GetComponentInParent<Tile_Overlay>();
+                PositionCharacterOnTile(start_tile);
+                
+            }
             
-            RaycastHit2D start_hit = Physics2D.Raycast(new Vector2 (transform.position.x,transform.position.y), Vector2.zero);
-            Tile_Overlay start_tile = start_hit.transform.GetComponentInParent<Tile_Overlay>();
-            PositionCharacterOnTile(start_tile);
-        }        
+            yield return new WaitForEndOfFrame();
+        }    
     }
 
     public IEnumerator MoveAlongPath(List<Tile_Overlay> movement_path){
