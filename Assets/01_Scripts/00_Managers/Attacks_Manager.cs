@@ -69,7 +69,7 @@ public class Attacks_Manager : MonoBehaviour{
 
     public void GetAllyCharacterAttacks ( Names.character character, Names.attack_selector attack ){
         
-        character_attacking = Mouse_Manager.Instance.GetCharacterTransform(character);        
+        character_attacking = Mouse_Manager.Instance.GetCharacterScript(character);        
 
         if (character == Names.character.Peeler){
 

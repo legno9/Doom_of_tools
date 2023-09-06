@@ -142,7 +142,7 @@ public abstract class Enemy_Basics: MonoBehaviour{
 
     protected IEnumerator MoveEnemyAlongPath(List<Tile_Overlay> movement_path){
 
-        yield return new WaitForSeconds(1f);
+        yield return new WaitForSeconds(0.5f);
 
         for (int i = 0; i< path.Count; i++ ){ // Show arrows
 
@@ -152,6 +152,8 @@ public abstract class Enemy_Basics: MonoBehaviour{
             var arrow_dir = character_arrow.TranslateDirection(previous_tile, path[i], future_tile);
             path[i].SetArrowSprite(arrow_dir);
         }
+
+        yield return new WaitForSeconds(0.5f);
         
         while (movement_path.Count > 0){
 
@@ -209,7 +211,7 @@ public abstract class Enemy_Basics: MonoBehaviour{
         }
         
 
-        yield return new WaitForSeconds(1);
+        yield return new WaitForSeconds(1.5f);
 
         foreach ( Transform c in to_attack){
             foreach ( Tile_Overlay t in attack_range){

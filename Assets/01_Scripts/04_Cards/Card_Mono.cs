@@ -13,6 +13,7 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     private int id;
     private Names.attack_selector attack;
     private Names.character character;
+    private Characters_Basic character_basics;
     private int cost;
     private int damage;
     private string description;
@@ -44,13 +45,13 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         name_text.text = card_name;
         cost_text.text = cost.ToString();
         description_text.text = description.ToString();   
-        character_text.text = character.ToString();      
+        character_text.text = character.ToString();  
     }
 
     public IEnumerator MoveToCharacter (){ 
 
         Vector3 start_position = transform.position;
-        Vector3 character_position = Mouse_Manager.Instance.GetCharacterTransform(character).transform.position;
+        Vector3 character_position = character_basics.transform.position;
         Vector3 end_position = Camera.main.WorldToScreenPoint(character_position);
 
         float frames_taken = 0;
@@ -96,6 +97,7 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         transform.SetParent(cards_manager.hand_cards);
         
         transform.SetSiblingIndex(card_sibling_index);
+        character_basics = Mouse_Manager.Instance.GetCharacterScript(character);   
         on_hand = true;
     }
 
@@ -139,8 +141,9 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             animator.SetBool("Hovered",true);
             visuals.GetComponent<Canvas>().sortingOrder = 1;
 
-            if (cards_manager.attack_preview_availaible){
+            if (cards_manager.attack_preview_availaible && Mouse_Manager.Instance.moving == false){
 
+                Mouse_Manager.Instance.ClearAndHide();
                 Attacks_Manager.Instance.GetAllyCharacterAttacks(character, attack);
             }
         }

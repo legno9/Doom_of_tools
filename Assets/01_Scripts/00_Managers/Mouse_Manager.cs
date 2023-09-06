@@ -23,6 +23,7 @@ public class Mouse_Manager : MonoBehaviour
 
     [System.NonSerialized] public Characters_Basic character_clicked;
     [System.NonSerialized] public Card_Mono card_on_use = null;
+    [System.NonSerialized] public bool moving = false;
     private List<Tile_Overlay> path = new();
     private List<Tile_Overlay> movement_range = new();
     
@@ -126,7 +127,6 @@ public class Mouse_Manager : MonoBehaviour
             character_clicked.Attack(attack_range_selected);
             Cards_Manager.Instance.DiscardCard(card_on_use);
             card_on_use = null;
-            selector_sprite.enabled = true;
             ClearAndHide();
         }
        
@@ -208,7 +208,6 @@ public class Mouse_Manager : MonoBehaviour
 
                 ClearAndHide();
                 character_clicked = null;
-                selector_sprite.enabled = true;
 
             }
         }
@@ -225,13 +224,12 @@ public class Mouse_Manager : MonoBehaviour
 
                 ClearAndHide();
                 character_clicked = null;
-                selector_sprite.enabled = true;
 
             }
         }
 
     }
-    public Characters_Basic GetCharacterTransform ( Names.character name){
+    public Characters_Basic GetCharacterScript ( Names.character name){
 
         foreach (Transform c in ally_characters_tile.Keys){
             
@@ -246,6 +244,8 @@ public class Mouse_Manager : MonoBehaviour
         return null;
 
     }
+
+    
     public void ClearAndHide(){
         
         HideTiles();
@@ -266,6 +266,7 @@ public class Mouse_Manager : MonoBehaviour
         movement_range.Clear();
         attack_range.Clear();
         path.Clear();
+        selector_sprite.enabled = true;
     }
     public void HideTiles(){
 

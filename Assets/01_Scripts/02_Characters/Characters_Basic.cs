@@ -18,7 +18,7 @@ public class Characters_Basic : MonoBehaviour
     public Names.character name_;
     public int health;
     public int movement;
-    public int speed = 4;
+    public int speed = 8;
     public bool ally;
     [System.NonSerialized]public bool action_used = false;
     [System.NonSerialized]public int damage_amount;
@@ -50,6 +50,7 @@ public class Characters_Basic : MonoBehaviour
     public IEnumerator MoveAlongPath(List<Tile_Overlay> movement_path){
         
         Mouse_Manager.Instance.character_clicked = null;
+        Mouse_Manager.Instance.moving = true;
         action_used = true;
         animator.SetBool("Walking",true);
         
@@ -70,6 +71,7 @@ public class Characters_Basic : MonoBehaviour
         }
         
         animator.SetBool("Walking",false);
+        Mouse_Manager.Instance.moving = false;
         
     }
 
