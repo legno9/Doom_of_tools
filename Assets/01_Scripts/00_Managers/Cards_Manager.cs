@@ -1,7 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
 using TMPro;
 
 
@@ -21,11 +20,12 @@ public class Cards_Manager : MonoBehaviour
     public TMP_Text draw_deck_number;
     public TMP_Text discard_deck_number;
     public TMP_Text mana;
-    public Button end_turn_button;
     public bool attack_preview_availaible = true;
+    public bool drawing = false;
     public Card_Mono card_being_clicked;
     public int start_mana = 3;
     private int left_mana;
+    public Button_Anims end_turn_button;
 
 
 
@@ -66,17 +66,18 @@ public class Cards_Manager : MonoBehaviour
 
         RefillMana();
         int cards_drawed = 0;
-        end_turn_button.interactable = false;
+        end_turn_button.ButtonActive( false);
+        drawing = true;
 
         while ( cards_drawed < draw_quantity ){
 
             if (draw_deck.Count > 0){
 
-                Card_Mono card_drawed =  Instantiate(card_prefab, draw_deck_number.transform.position + new Vector3 (50,Screen.height/2.5f,0), Quaternion.Euler(0,0,0), canvas);
+                Card_Mono card_drawed =  Instantiate(card_prefab, draw_deck_number.transform.position + new Vector3 (0.5f,4.5f,0), Quaternion.Euler(0,0,0), canvas);
                 card_drawed.this_id = draw_deck[0].id;
                 
                 card_drawed.animator.Play("Card_Drawed");
-                card_drawed.card_sibling_index = cards_drawed;
+                card_drawed.card_sibling_index = draw_quantity - 1 - cards_drawed;
 
                 hand_deck.Add (card_drawed, draw_deck[0]);
                 draw_deck.RemoveAt(0);
@@ -93,8 +94,9 @@ public class Cards_Manager : MonoBehaviour
 
             yield return new WaitForSeconds(0.9f);
         }
-
-        end_turn_button.interactable = true;
+        
+        drawing = false;
+        end_turn_button.ButtonActive( true);
     }
 
     public void DiscardCard( Card_Mono card_used){
@@ -200,6 +202,19 @@ public class Cards_Manager : MonoBehaviour
                 discard_deck.Remove(basics_to_check[c]);
                 discard_deck_number.text = discard_deck.Count.ToString();
 
+            }
+        }
+
+        basics_to_check.Clear();
+        basics_to_check.AddRange(hand_deck.Values);
+        List<Card_Mono> monos_to_check = new List<Card_Mono> (hand_deck.Keys);
+
+        for (int c = 0; c < basics_to_check.Count; c++){
+            
+            if (basics_to_check[c].character == character_dead.name_){
+
+                hand_deck.Remove(monos_to_check[c]);
+                StartCoroutine(monos_to_check[c].DissolveCard());
             }
         }
     }

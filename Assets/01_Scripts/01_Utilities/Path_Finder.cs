@@ -7,12 +7,13 @@ using UnityEngine;
 public class Path_Finder{
 
     private Range_Finder range_finder = new();
-    public List <Tile_Overlay> FindPath (Tile_Overlay start,Tile_Overlay end){
+    public List <Tile_Overlay> FindPath (Tile_Overlay start,Tile_Overlay end, int character_movement){
 
         List<Tile_Overlay> openList = new();
         List<Tile_Overlay> closedList = new();
         
         openList.Add(start);
+        int tiles_added = 0;
 
         while(openList.Count > 0){
             
@@ -20,10 +21,27 @@ public class Path_Finder{
             
             openList.Remove (current_overlay_tile);
             closedList.Add (current_overlay_tile);
+            tiles_added += 1;
 
-            if (current_overlay_tile == end){
+            if (current_overlay_tile == end ){ //Because is taking into account the start tile
                 
-                return GetFinishedList (start, end);
+                List<Tile_Overlay> finished_list = new();
+                Tile_Overlay current_tile = end;
+
+                while (current_tile != start){
+
+                    finished_list.Add(current_tile);
+                    current_tile = current_tile.previous;
+                
+                }
+
+                finished_list.Reverse();
+
+                while (finished_list.Count > character_movement){
+
+                    finished_list.Remove(finished_list.Last());
+                }
+                return finished_list;
                 
             }
 
@@ -50,22 +68,6 @@ public class Path_Finder{
         }
 
         return new List<Tile_Overlay>();
-    }
-
-    private List<Tile_Overlay> GetFinishedList(Tile_Overlay start, Tile_Overlay end)
-    {
-        List<Tile_Overlay> finished_list = new();
-        Tile_Overlay current_tile = end;
-
-        while (current_tile != start){
-
-            finished_list.Add(current_tile);
-            current_tile = current_tile.previous;
-
-        }
-
-        finished_list.Reverse();
-        return finished_list;
     }
 
     private int GetDistance(Tile_Overlay start, Tile_Overlay neighbour)

@@ -22,10 +22,12 @@ public class Mouse_Manager : MonoBehaviour
     [System.NonSerialized]public List<Tile_Overlay> attack_range_selected = new();
 
     [System.NonSerialized] public Characters_Basic character_clicked;
+    [System.NonSerialized] public Characters_Basic character_moved;
     [System.NonSerialized] public Card_Mono card_on_use = null;
     [System.NonSerialized] public bool moving = false;
     private List<Tile_Overlay> path = new();
     private List<Tile_Overlay> movement_range = new();
+    public Button_Anims undo_button;
     
 
     private void Awake() { 
@@ -38,7 +40,6 @@ public class Mouse_Manager : MonoBehaviour
             Destroy(this.gameObject);}
 
         selector_sprite = GetComponent<SpriteRenderer>();
-        Application.targetFrameRate = 60;
     }
 
     private void LateUpdate(){ //Select tiles
@@ -135,12 +136,7 @@ public class Mouse_Manager : MonoBehaviour
 
         if (movement_range.Contains(tile_to_check)){ //Display all the arrows to the tile hovered
             
-            path = path_finder.FindPath(character_clicked.active_tile, tile_to_check);
-            
-            while (path.Count > character_clicked.movement){
-
-                path.Remove(path.Last());
-            }
+            path = path_finder.FindPath(character_clicked.active_tile, tile_to_check, character_clicked.movement);
 
             foreach ( var tile in movement_range){ //Remove unused arrows
                 
@@ -160,9 +156,16 @@ public class Mouse_Manager : MonoBehaviour
             if (Input.GetMouseButtonDown(0) && path.Count > 0){   //Move
                     
                 HideTiles();
+
+                character_moved = character_clicked;
+                character_clicked.last_movement_path.AddRange(path);
+                character_clicked.action_used = true;
+                character_clicked.last_active_tile = character_clicked.active_tile;
+
                 StartCoroutine(character_clicked.MoveAlongPath(path));
-                selector_sprite.enabled = true;
                 
+                selector_sprite.enabled = true;
+                Mouse_Manager.Instance.undo_button.ButtonActive(true);
             } 
         }
     }
@@ -192,7 +195,7 @@ public class Mouse_Manager : MonoBehaviour
 
             foreach( Tile_Overlay tile in movement_range ){
         
-                tile.ShowTile(Color.blue);
+                tile.ShowTile(tile.blue_color);
             }
         } 
     }

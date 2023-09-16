@@ -9,7 +9,9 @@ public class Characters_Basic : MonoBehaviour
     [System.NonSerialized] public Animator animator;
     public Health_System health_system;
     [System.NonSerialized] public Health_Bar health_bar;
-    [System.NonSerialized] public Tile_Overlay active_tile; 
+    [System.NonSerialized] public Tile_Overlay active_tile;
+    [System.NonSerialized] public Tile_Overlay last_active_tile;
+    [System.NonSerialized] public List<Tile_Overlay> last_movement_path = new();  
 
     private Dictionary<Transform ,Vector2Int> total_characters_tile;
     private Dictionary<Transform ,Vector2Int> ally_characters_tile;
@@ -36,7 +38,7 @@ public class Characters_Basic : MonoBehaviour
     } 
 
     IEnumerator SetCharactersStartTile() {
-         yield return new WaitForFixedUpdate();
+
         while (active_tile == null) {
 
             RaycastHit2D start_hit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y), Vector2.zero);
@@ -45,7 +47,6 @@ public class Characters_Basic : MonoBehaviour
                 
                 Tile_Overlay start_tile = start_hit.transform.GetComponentInParent<Tile_Overlay>();
                 PositionCharacterOnTile(start_tile);
-                
             }
             
             yield return new WaitForEndOfFrame();
@@ -56,9 +57,9 @@ public class Characters_Basic : MonoBehaviour
         
         Mouse_Manager.Instance.character_clicked = null;
         Mouse_Manager.Instance.moving = true;
-        action_used = true;
         animator.SetBool("Walking",true);
-        
+        Cards_Manager.Instance.end_turn_button.ButtonActive(false);
+
         while (movement_path.Count > 0){
 
             var step = speed * Time.deltaTime; //Movement speed
@@ -77,7 +78,22 @@ public class Characters_Basic : MonoBehaviour
         
         animator.SetBool("Walking",false);
         Mouse_Manager.Instance.moving = false;
-        
+
+        if (Cards_Manager.Instance.drawing == false){ //If it is drawing cards dont activate button
+
+            Cards_Manager.Instance.end_turn_button.ButtonActive(true);
+        }
+    }
+
+    public void UndoMovevement(){
+
+        last_movement_path.Reverse();
+        last_movement_path.Remove(active_tile); //Add the actual position
+        last_movement_path.Add (last_active_tile); //Add the position where it was
+
+        StartCoroutine(MoveAlongPath(last_movement_path));
+        Mouse_Manager.Instance.character_moved = null;
+        action_used = false;
     }
 
     public void PositionCharacterOnTile (Tile_Overlay tile){
@@ -163,7 +179,7 @@ public class Characters_Basic : MonoBehaviour
             
         }else{
 
-             Mouse_Manager.Instance.enemy_characters_tile.Remove(transform);
+            Mouse_Manager.Instance.enemy_characters_tile.Remove(transform);
         }
 
         active_tile.blocked = false;

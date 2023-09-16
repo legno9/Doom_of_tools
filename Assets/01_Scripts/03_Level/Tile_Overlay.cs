@@ -20,6 +20,8 @@ public class Tile_Overlay : MonoBehaviour
     private Animator above_animator;
     private SpriteRenderer arrow_sprite;
     private SpriteRenderer hit_sprite;
+    public Color red_color; 
+    public Color blue_color;
 
     private void Awake() {
         
@@ -27,6 +29,8 @@ public class Tile_Overlay : MonoBehaviour
         arrow_sprite = GetComponentsInChildren<SpriteRenderer>()[1];
         hit_sprite = GetComponentsInChildren<SpriteRenderer>()[2];
         above_animator.SetBool("Selected",true);
+        blue_color = new(0.067f, 0.251f, 0.851f);
+        red_color = new(0.9f, 0.29f, 0.23f);
     }
     public void ShowTile(Color color, float extract_alpha= 0){
         

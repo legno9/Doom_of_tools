@@ -24,6 +24,7 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
    
     public Animator animator;
     public GameObject visuals;
+    public Material dissolve_material;
 
     public TMP_Text name_text;
     public TMP_Text cost_text;
@@ -46,13 +47,15 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         cost_text.text = cost.ToString();
         description_text.text = description.ToString();   
         character_text.text = character.ToString();  
+
+        // mat = GetComponent<SpriteRenderer>().material;
     }
 
     public IEnumerator MoveToCharacter (){ 
 
         Vector3 start_position = transform.position;
-        Vector3 character_position = character_basics.transform.position;
-        Vector3 end_position = Camera.main.WorldToScreenPoint(character_position);
+        Vector3 end_position = character_basics.transform.position;
+
 
         float frames_taken = 0;
         float frames_needed = 20;
@@ -74,16 +77,25 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public IEnumerator MoveToHand (){
 
-        Vector3 start_position = transform.position;
-        Vector3 end_position = new Vector3 ( Screen.width/2, Screen.height/10 ,0 ); //Middle 
-
         float frames_taken = 0;
         float frames_needed = 20;
 
+        Vector3 start_position = transform.position;
+        Vector3 end_position = Cards_Manager.Instance.hand_cards.transform.position;
+        
         while (frames_taken < frames_needed){
+            
+            Vector3 center = (start_position + end_position) * 0.5f;
+            center -= new Vector3(0, 4, 0);
 
-            transform.position = Vector3.Slerp(start_position, end_position, Mathf.SmoothStep(0, 1, (frames_taken/frames_needed)));
-            Vector3 next_position = Vector3.Slerp(start_position, end_position, Mathf.SmoothStep(0, 1, ((frames_taken +1)/frames_needed)));
+            Vector3 rel_start = start_position -center;
+            Vector3 rel_end = end_position -center;
+
+            transform.position = Vector3.Slerp(rel_start, rel_end, Mathf.SmoothStep(0, 1, (frames_taken/frames_needed)));
+            transform.position += center;
+
+            Vector3 next_position = Vector3.Slerp(rel_start, rel_end, Mathf.SmoothStep(0, 1, ((frames_taken +1)/frames_needed)));
+            next_position += center;
 
             Vector3 direction = (next_position - transform.position).normalized;
             visuals.transform.up = -direction;
@@ -91,12 +103,13 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
             yield return new WaitForEndOfFrame();
         }
-        
+
         transform.position = end_position;
         visuals.transform.up = Vector3.zero;
         transform.SetParent(cards_manager.hand_cards);
+        visuals.GetComponent<Canvas>().overrideSorting = false;
         
-        transform.SetSiblingIndex(card_sibling_index);
+        transform.SetSiblingIndex(0);
         character_basics = Mouse_Manager.Instance.GetCharacterScript(character);   
         on_hand = true;
     }
@@ -117,8 +130,8 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         
         while (frames_taken < frames_needed){
             
-            transform.position = Vector3.Slerp(start_position, end_position, Mathf.SmoothStep(0, 1, (frames_taken/frames_needed)));
-            Vector3 next_position = Vector3.Slerp(start_position, end_position, Mathf.SmoothStep(0, 1, ((frames_taken +1)/frames_needed)));
+            transform.position = Vector3.Lerp(start_position, end_position, Mathf.SmoothStep(0, 1, (frames_taken/frames_needed)));
+            Vector3 next_position = Vector3.Lerp(start_position, end_position, Mathf.SmoothStep(0, 1, ((frames_taken +1)/frames_needed)));
 
             Vector3 direction = (next_position - transform.position).normalized;
             visuals.transform.up = direction;
@@ -139,7 +152,9 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             
             animator.Play("Card_Hovered");
             animator.SetBool("Hovered",true);
-            visuals.GetComponent<Canvas>().sortingOrder = 1;
+            visuals.GetComponent<Canvas>().overrideSorting = true;
+            visuals.GetComponent<Canvas>().sortingLayerName = "UI";
+            
 
             if (cards_manager.attack_preview_availaible && Mouse_Manager.Instance.moving == false){
 
@@ -154,7 +169,8 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if (on_hand){
 
             animator.SetBool("Hovered",false);
-            visuals.GetComponent<Canvas>().sortingOrder = 0;
+            visuals.GetComponent<Canvas>().overrideSorting = false;
+            
             
             if (cards_manager.attack_preview_availaible){
 
@@ -221,9 +237,39 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         transform.SetParent(cards_manager.hand_cards);
         animator.SetBool("Selected", false);
         transform.SetSiblingIndex(card_sibling_index);
-        visuals.GetComponent<Canvas>().sortingOrder = 0;
+
         cards_manager.IsEnoughMana(-cost);
         
     }
 
+
+    public IEnumerator DissolveCard(){
+
+        Image visual = visuals.GetComponent<Image>();
+        visual.material = dissolve_material;
+
+        Image picture = visuals.GetComponentsInChildren<Image>()[1];
+        picture.material = dissolve_material;
+        
+        float fade = 1;
+        visual.material.SetFloat("_Fade", fade);
+
+        while (fade >= 0 ){
+
+            visual.material.SetFloat("_Fade", fade);
+
+            fade -= Time.deltaTime;
+
+            if (fade < 0.3f){
+                
+                foreach (Transform child in visuals.transform) {
+                    Destroy(child.gameObject);
+                }
+            }
+
+            yield return new WaitForEndOfFrame();
+        }
+
+        Destroy(this.gameObject);
+    }
 }

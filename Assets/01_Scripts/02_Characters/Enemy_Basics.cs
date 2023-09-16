@@ -60,7 +60,6 @@ public abstract class Enemy_Basics: MonoBehaviour{
             
             foreach (Tile_Overlay t in attack_range){
                 attacks_preference.Add(t, attack);
-
                 foreach ( Transform c in ally_characters_tile.Keys){
                     
                     if (c.position == t.transform.position){  // If any tile position its the same as any character position
@@ -91,17 +90,18 @@ public abstract class Enemy_Basics: MonoBehaviour{
         Names.attack_selector attack_type = Names.attack_selector.none;
 
         foreach (Tile_Overlay tile in attacks_preference.Keys){
+            
             if (attack_type == Names.attack_selector.none ){ //From the most important attack to the least
                 foreach ( Vector2Int ally_position in ally_characters_tile.Values){
 
                     int tiles_number = basics.TilesOfDistance(ally_position, tile.grid2D_location);
-                    float provisional_turns_number = tiles_number/basics.movement;
 
                     if ( tiles_number < shortest_distance){
                                                 
                         attack_type = attacks_preference[tile];
                         attack_position = ally_position - tile.grid2D_location + basics.active_tile.grid2D_location;
                         shortest_distance = tiles_number;
+                        
                     }
                 }
             }else{
@@ -117,21 +117,28 @@ public abstract class Enemy_Basics: MonoBehaviour{
 
         foreach (Tile_Overlay possible_tile in movement_range){ //Get nearest tile to new_position
 
-            possible_tile.ShowTile(Color.blue);
+            possible_tile.ShowTile(possible_tile.blue_color);
             int new_distance = basics.TilesOfDistance(attack_position, possible_tile.grid2D_location );
             
             if ( new_distance < lowest_distance ){
 
                 lowest_distance = new_distance;
                 desired_tile_move = possible_tile;
+
             }  
         }
 
-        path = path_finder.FindPath(basics.active_tile, desired_tile_move);
+        if (desired_tile_move.grid2D_location != attack_position && lowest_distance <= basics.movement){ //Out of map ///Recheck///////
+
+            //Shoulr revise next possible attack position
+            //If there isnt any posible attack move to create one
+        }
+
+        path = path_finder.FindPath(basics.active_tile, desired_tile_move, basics.movement);
 
         if (path.Count == 0){ //Cant move
             
-            path = path_finder.FindPath(basics.active_tile, movement_range[UnityEngine.Random.Range(0, movement_range.Count)]); //Random tile
+            path = path_finder.FindPath(basics.active_tile, movement_range[UnityEngine.Random.Range(0, movement_range.Count)],basics.movement); //Random tile
 
         }
 
@@ -188,7 +195,7 @@ public abstract class Enemy_Basics: MonoBehaviour{
             foreach (Tile_Overlay tile in attack_range){
                 
                 tile.SetHitSprite(selected:true); //Set attack tiles sprite
-                tile.ShowTile(Color.red);
+                tile.ShowTile(tile.red_color);
             }
                                 
         }else{
@@ -196,7 +203,7 @@ public abstract class Enemy_Basics: MonoBehaviour{
             foreach (Tile_Overlay tile in attack_range){
                 
                 tile.SetTileDirection(basics.active_tile);
-                tile.ShowTile(Color.red); 
+                tile.ShowTile(tile.red_color); 
                     
                 if (tile.direction == tile_attacking.direction){
                     

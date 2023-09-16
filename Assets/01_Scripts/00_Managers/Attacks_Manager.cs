@@ -99,7 +99,7 @@ public class Attacks_Manager : MonoBehaviour{
 
         foreach( var tile in attack_tiles ){
         
-            tile.ShowTile(Color.red, 0.5f);
+            tile.ShowTile(tile.red_color, 0.5f);
         } 
     }
 
@@ -119,7 +119,7 @@ public class Attacks_Manager : MonoBehaviour{
 
         foreach( var tile in attack_tiles ){
         
-            tile.ShowTile(Color.red);
+            tile.ShowTile(tile.red_color);
         } 
     }
 
