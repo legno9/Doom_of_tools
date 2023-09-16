@@ -66,7 +66,7 @@ public class Cards_Manager : MonoBehaviour
 
         RefillMana();
         int cards_drawed = 0;
-        end_turn_button.ButtonActive( false);
+        end_turn_button.SetButtonActive( false);
         drawing = true;
 
         while ( cards_drawed < draw_quantity ){
@@ -96,7 +96,7 @@ public class Cards_Manager : MonoBehaviour
         }
         
         drawing = false;
-        end_turn_button.ButtonActive( true);
+        end_turn_button.SetButtonActive( true);
     }
 
     public void DiscardCard( Card_Mono card_used){

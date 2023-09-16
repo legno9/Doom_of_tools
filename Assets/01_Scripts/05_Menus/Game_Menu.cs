@@ -1,13 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
 public class Game_Menu : MonoBehaviour
 { 
     public Button_Anims end_turn_button;
-    public Button_Anims undo_move_buton;  
-    public GameObject options;    
+    public Button_Anims undo_move_buton;
+    public Button_Anims house_buton;
+    public Button_Anims options_button;      
+    public GameObject options;   
+    private bool undo_button_state = false; 
 
     private void Start() {
 
@@ -30,7 +31,7 @@ public class Game_Menu : MonoBehaviour
 
     public void EndTurn(){
 
-        end_turn_button.ButtonActive(false);
+        end_turn_button.SetButtonActive(false);
         StartCoroutine(Turns_Manager.Instance.EnemyTurn());
         Cards_Manager.Instance.DiscardHand();
 
@@ -43,18 +44,35 @@ public class Game_Menu : MonoBehaviour
     public void UndoMove(){
 
         Mouse_Manager.Instance.character_moved.UndoMovevement();
-        undo_move_buton.ButtonActive(false);
+        undo_move_buton.SetButtonActive(false);
 
     }
 
     public void OpenOptions(){
 
         options.SetActive(true);
+        Audio_Manager.instance.Pause("Theme");
+        Time.timeScale = 0;
+        house_buton.SetButtonActive(false);
+        options_button.SetButtonActive(false);
+
+        if (undo_move_buton.active == true){
+            undo_move_buton.SetButtonActive(false);
+            undo_button_state = true;
+        }
     }
 
     public void QuitOptions(){
 
         options.SetActive(false);
+        Audio_Manager.instance.UnPause("Theme");
+        Time.timeScale = 1;
+        house_buton.SetButtonActive(true);
+        options_button.SetButtonActive(true);
+
+        if (undo_button_state == true){
+            undo_move_buton.SetButtonActive(true);
+        }
     }
 
     public void BackToStart(){

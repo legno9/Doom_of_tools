@@ -47,8 +47,6 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         cost_text.text = cost.ToString();
         description_text.text = description.ToString();   
         character_text.text = character.ToString();  
-
-        // mat = GetComponent<SpriteRenderer>().material;
     }
 
     public IEnumerator MoveToCharacter (){ 
@@ -62,6 +60,8 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         
         while (frames_taken < frames_needed){
             
+            yield return new WaitUntil(()=> Time.timeScale == 1);
+
             transform.position = Vector3.Lerp(start_position, end_position, Mathf.SmoothStep(0, 1, (frames_taken/frames_needed)));
 
             frames_taken += 1;
@@ -85,6 +85,8 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         
         while (frames_taken < frames_needed){
             
+            yield return new WaitUntil(()=> Time.timeScale == 1);
+
             Vector3 center = (start_position + end_position) * 0.5f;
             center -= new Vector3(0, 4, 0);
 
@@ -130,6 +132,8 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         
         while (frames_taken < frames_needed){
             
+            yield return new WaitUntil(()=> Time.timeScale == 1);
+
             transform.position = Vector3.Lerp(start_position, end_position, Mathf.SmoothStep(0, 1, (frames_taken/frames_needed)));
             Vector3 next_position = Vector3.Lerp(start_position, end_position, Mathf.SmoothStep(0, 1, ((frames_taken +1)/frames_needed)));
 

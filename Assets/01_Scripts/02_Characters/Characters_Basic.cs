@@ -1,8 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using System.Linq;
-using UnityEngine.Tilemaps;
 
 public class Characters_Basic : MonoBehaviour
 {
@@ -58,7 +56,7 @@ public class Characters_Basic : MonoBehaviour
         Mouse_Manager.Instance.character_clicked = null;
         Mouse_Manager.Instance.moving = true;
         animator.SetBool("Walking",true);
-        Cards_Manager.Instance.end_turn_button.ButtonActive(false);
+        Cards_Manager.Instance.end_turn_button.SetButtonActive(false);
 
         while (movement_path.Count > 0){
 
@@ -81,7 +79,7 @@ public class Characters_Basic : MonoBehaviour
 
         if (Cards_Manager.Instance.drawing == false){ //If it is drawing cards dont activate button
 
-            Cards_Manager.Instance.end_turn_button.ButtonActive(true);
+            Cards_Manager.Instance.end_turn_button.SetButtonActive(true);
         }
     }
 

@@ -1,7 +1,4 @@
 
-using UnityEngine;
-using System;
-
 public class Health_System
 {
     private Characters_Basic character;

@@ -1,5 +1,3 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq; //Could cause lag because is in update
 using UnityEngine;
@@ -44,34 +42,36 @@ public class Mouse_Manager : MonoBehaviour
 
     private void LateUpdate(){ //Select tiles
 
+        if (Time.timeScale == 1){ //Not paused
         
-        
-        Vector3 mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        Vector2 mouse_pos_2D = new( mouse_pos.x, mouse_pos.y);
-        RaycastHit2D[] hits = Physics2D.RaycastAll (mouse_pos_2D, Vector2.zero);  // Detects all colliders and return them in an array from first to last
+            Vector3 mouse_pos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+            Vector2 mouse_pos_2D = new( mouse_pos.x, mouse_pos.y);
+            RaycastHit2D[] hits = Physics2D.RaycastAll (mouse_pos_2D, Vector2.zero);  // Detects all colliders and return them in an array from first to last
 
-        if (hits.Length > 0){
-            
-            RaycastHit2D focus_tile =  hits.OrderByDescending(i => i.collider.transform.position.z).First();
-            
-            Tile_Overlay overlay_tile = focus_tile.collider.gameObject.GetComponentInParent<Tile_Overlay>(); //Get the V_Overlay_Tilemap collided
-            transform.position = overlay_tile.transform.position;
-            gameObject.GetComponent<SpriteRenderer>().sortingOrder = overlay_tile.GetComponentInChildren<SpriteRenderer>().sortingOrder+1; // Assign the same +1 sorting order
-            
-            if (character_clicked != null){ 
+            if (hits.Length > 0){
                 
-                CheckAttackRange(overlay_tile);
-                CheckMovementRange(overlay_tile);
-                CheckStopAll(overlay_tile);
+                RaycastHit2D focus_tile =  hits.OrderByDescending(i => i.collider.transform.position.z).First();
+                
+                Tile_Overlay overlay_tile = focus_tile.collider.gameObject.GetComponentInParent<Tile_Overlay>(); //Get the V_Overlay_Tilemap collided
+                transform.position = overlay_tile.transform.position;
+                gameObject.GetComponent<SpriteRenderer>().sortingOrder = overlay_tile.GetComponentInChildren<SpriteRenderer>().sortingOrder+1; // Assign the same +1 sorting order
+                
+                if (character_clicked != null){ 
+                    
+                    CheckAttackRange(overlay_tile);
+                    CheckMovementRange(overlay_tile);
+                    CheckStopAll(overlay_tile);
+                }
+
+                
+                CheckCharacterClicked(overlay_tile);
+
+            }else{
+
+                CheckStopAll();
             }
-
-            
-            CheckCharacterClicked(overlay_tile);
-
-        }else{
-
-            CheckStopAll();
         }
+        
     }
     private void CheckAttackRange( Tile_Overlay tile_to_check){
 
@@ -165,7 +165,7 @@ public class Mouse_Manager : MonoBehaviour
                 StartCoroutine(character_clicked.MoveAlongPath(path));
                 
                 selector_sprite.enabled = true;
-                Mouse_Manager.Instance.undo_button.ButtonActive(true);
+                Mouse_Manager.Instance.undo_button.SetButtonActive(true);
             } 
         }
     }

@@ -1,8 +1,4 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.UI;
 
 public class Button_Anims : MonoBehaviour
@@ -14,11 +10,11 @@ public class Button_Anims : MonoBehaviour
 
         button_anim = transform.GetComponent<Animator>();
         transform.GetComponent<Button>().interactable = active;
-        ButtonActive(active);
+        SetButtonActive(active);
 
     }
 
-    public void ButtonActive(bool active_) {
+    public void SetButtonActive(bool active_) {
 
         if (active_ == false){
 
@@ -31,7 +27,7 @@ public class Button_Anims : MonoBehaviour
             active = true;
             button_anim.Play("Normal");
         }
-        
+
         transform.GetComponent<Button>().interactable = active;
     }
 
