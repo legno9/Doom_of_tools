@@ -1153,154 +1153,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1262306783}
   m_CullTransparentMesh: 1
---- !u!1 &1293355724
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1293355726}
-  - component: {fileID: 1293355725}
-  m_Layer: 0
-  m_Name: Audio_Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &1293355725
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1293355724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3ad61c606e7d634681696a312660524, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  mixer: {fileID: 24300002, guid: 74838598c0ca807449e94815e262eed8, type: 2}
-  sounds:
-  - name: Theme
-    clip: {fileID: 8300000, guid: 072eaef77957b7644b09b24732a372dc, type: 3}
-    volume: 0.406
-    pitch: 1
-    loop: 1
-    source: {fileID: 0}
-  - name: Hover
-    clip: {fileID: 8300000, guid: e8605c1232c67374bb0c9834a98fb574, type: 3}
-    volume: 0.704
-    pitch: 1.1
-    loop: 0
-    source: {fileID: 0}
-  - name: Click
-    clip: {fileID: 8300000, guid: 0c9b8a7c4fe39f64d80ebf368192d9b7, type: 3}
-    volume: 1
-    pitch: 0.9
-    loop: 0
-    source: {fileID: 0}
-  - name: Scroll
-    clip: {fileID: 8300000, guid: a5d9a711029e1e7449e6e64a7e752eb3, type: 3}
-    volume: 0.79
-    pitch: 1
-    loop: 0
-    source: {fileID: 0}
-  - name: Card_Hover
-    clip: {fileID: 8300000, guid: 16738b05d3c4764468dbc8f6570fdc5e, type: 3}
-    volume: 1
-    pitch: 1
-    loop: 0
-    source: {fileID: 0}
-  - name: Card_Out
-    clip: {fileID: 8300000, guid: bfdf7a67b87108348b8f606e5e25fae3, type: 3}
-    volume: 0.816
-    pitch: 0.8
-    loop: 0
-    source: {fileID: 0}
-  - name: Card_In
-    clip: {fileID: 8300000, guid: bfdf7a67b87108348b8f606e5e25fae3, type: 3}
-    volume: 1
-    pitch: 1.43
-    loop: 0
-    source: {fileID: 0}
-  - name: Card_Shuffle
-    clip: {fileID: 8300000, guid: 1653da3c5ac072c4ebfe4a14a47dc6d2, type: 3}
-    volume: 0.831
-    pitch: 1.32
-    loop: 0
-    source: {fileID: 0}
-  - name: Error
-    clip: {fileID: 8300000, guid: 30b32c6f89a35174cace1d8182ba323d, type: 3}
-    volume: 1
-    pitch: 0.87
-    loop: 0
-    source: {fileID: 0}
-  - name: Dissolve
-    clip: {fileID: 8300000, guid: 2083c41fa20473d4d8cd5590dd8aa8a2, type: 3}
-    volume: 0.712
-    pitch: 0.8
-    loop: 0
-    source: {fileID: 0}
-  - name: Character_Selected
-    clip: {fileID: 8300000, guid: e457e42ee8bf4b5429c99fd635544f8f, type: 3}
-    volume: 0.689
-    pitch: 0.8
-    loop: 0
-    source: {fileID: 0}
-  - name: Hit
-    clip: {fileID: 8300000, guid: 3a881f8d11eb8fb4fa8a5a2521ee4fdb, type: 3}
-    volume: 0.22
-    pitch: 0.8
-    loop: 0
-    source: {fileID: 0}
-  - name: Woosh
-    clip: {fileID: 8300000, guid: 9b6d7bb435427d64fb716e78feb31ec3, type: 3}
-    volume: 0.6
-    pitch: 0.7
-    loop: 0
-    source: {fileID: 0}
-  - name: Victory
-    clip: {fileID: 8300000, guid: 348929cc7b3bdef45a61f78b337b18b8, type: 3}
-    volume: 1
-    pitch: 1.1
-    loop: 0
-    source: {fileID: 0}
-  - name: Loose
-    clip: {fileID: 8300000, guid: 4e654dd1394b0284ead58d76eb8b88ec, type: 3}
-    volume: 0.798
-    pitch: 1
-    loop: 0
-    source: {fileID: 0}
-  - name: Fight
-    clip: {fileID: 8300000, guid: c0fbae0e51418c1439d5eca1e9b45e7f, type: 3}
-    volume: 0.697
-    pitch: 1
-    loop: 1
-    source: {fileID: 0}
-  - name: Notification
-    clip: {fileID: 8300000, guid: edb645024527389429cb419d2e11abef, type: 3}
-    volume: 0.503
-    pitch: 0.72
-    loop: 1
-    source: {fileID: 0}
---- !u!4 &1293355726
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1293355724}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 1227.0538, y: 1155.2234, z: -5.804201}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_RootOrder: 3
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1324811077
 GameObject:
   m_ObjectHideFlags: 0
@@ -1653,6 +1505,160 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1707210300}
   m_CullTransparentMesh: 1
+--- !u!1 &1868611806
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1868611808}
+  - component: {fileID: 1868611807}
+  m_Layer: 0
+  m_Name: Audio_Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1868611807
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1868611806}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3ad61c606e7d634681696a312660524, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mixer: {fileID: 24300002, guid: 74838598c0ca807449e94815e262eed8, type: 2}
+  sounds:
+  - name: Theme
+    clip: {fileID: 8300000, guid: 072eaef77957b7644b09b24732a372dc, type: 3}
+    volume: 0.406
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Hover
+    clip: {fileID: 8300000, guid: e8605c1232c67374bb0c9834a98fb574, type: 3}
+    volume: 0.704
+    pitch: 1.1
+    loop: 0
+    source: {fileID: 0}
+  - name: Click
+    clip: {fileID: 8300000, guid: 0c9b8a7c4fe39f64d80ebf368192d9b7, type: 3}
+    volume: 1
+    pitch: 0.9
+    loop: 0
+    source: {fileID: 0}
+  - name: Scroll
+    clip: {fileID: 8300000, guid: a5d9a711029e1e7449e6e64a7e752eb3, type: 3}
+    volume: 0.79
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Card_Hover
+    clip: {fileID: 8300000, guid: 16738b05d3c4764468dbc8f6570fdc5e, type: 3}
+    volume: 1
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Card_Out
+    clip: {fileID: 8300000, guid: bfdf7a67b87108348b8f606e5e25fae3, type: 3}
+    volume: 0.816
+    pitch: 0.8
+    loop: 0
+    source: {fileID: 0}
+  - name: Card_In
+    clip: {fileID: 8300000, guid: bfdf7a67b87108348b8f606e5e25fae3, type: 3}
+    volume: 1
+    pitch: 1.43
+    loop: 0
+    source: {fileID: 0}
+  - name: Card_Shuffle
+    clip: {fileID: 8300000, guid: 1653da3c5ac072c4ebfe4a14a47dc6d2, type: 3}
+    volume: 0.831
+    pitch: 1.32
+    loop: 0
+    source: {fileID: 0}
+  - name: Error
+    clip: {fileID: 8300000, guid: 30b32c6f89a35174cace1d8182ba323d, type: 3}
+    volume: 1
+    pitch: 0.87
+    loop: 0
+    source: {fileID: 0}
+  - name: Dissolve
+    clip: {fileID: 8300000, guid: 2083c41fa20473d4d8cd5590dd8aa8a2, type: 3}
+    volume: 0.712
+    pitch: 0.8
+    loop: 0
+    source: {fileID: 0}
+  - name: Character_Selected
+    clip: {fileID: 8300000, guid: e457e42ee8bf4b5429c99fd635544f8f, type: 3}
+    volume: 0.689
+    pitch: 0.8
+    loop: 0
+    source: {fileID: 0}
+  - name: Hit
+    clip: {fileID: 8300000, guid: 3a881f8d11eb8fb4fa8a5a2521ee4fdb, type: 3}
+    volume: 0.22
+    pitch: 0.8
+    loop: 0
+    source: {fileID: 0}
+  - name: Woosh
+    clip: {fileID: 8300000, guid: 9b6d7bb435427d64fb716e78feb31ec3, type: 3}
+    volume: 0.6
+    pitch: 0.7
+    loop: 0
+    source: {fileID: 0}
+  - name: Victory
+    clip: {fileID: 8300000, guid: 348929cc7b3bdef45a61f78b337b18b8, type: 3}
+    volume: 1
+    pitch: 1.1
+    loop: 0
+    source: {fileID: 0}
+  - name: Loose
+    clip: {fileID: 8300000, guid: 4e654dd1394b0284ead58d76eb8b88ec, type: 3}
+    volume: 0.798
+    pitch: 1
+    loop: 0
+    source: {fileID: 0}
+  - name: Fight
+    clip: {fileID: 8300000, guid: c0fbae0e51418c1439d5eca1e9b45e7f, type: 3}
+    volume: 0.697
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+  - name: Notification
+    clip: {fileID: 8300000, guid: edb645024527389429cb419d2e11abef, type: 3}
+    volume: 0.503
+    pitch: 0.72
+    loop: 0
+    source: {fileID: 0}
+  - name: Chill
+    clip: {fileID: 8300000, guid: 9105b0628f5c47f4e9acec06c25cad4b, type: 3}
+    volume: 0.167
+    pitch: 1
+    loop: 1
+    source: {fileID: 0}
+--- !u!4 &1868611808
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1868611806}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1227.0538, y: 1155.2234, z: -5.804201}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 3
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1870229170
 PrefabInstance:
   m_ObjectHideFlags: 0

@@ -18,6 +18,7 @@ public class Tutorial_Texts : MonoBehaviour
         
         text_component.text = text_to_show[0];
         index = 0;
+        PlayerPrefs.SetInt ("TutorialPlayed", 1);
     }
 
 
@@ -39,5 +40,6 @@ public class Tutorial_Texts : MonoBehaviour
         
         SceneManager.LoadScene("Game");
         Audio_Manager.instance.Play ("Fight");
+        Audio_Manager.instance.Stop ("Chill");
     }
 }

@@ -37,9 +37,18 @@ public class Start_Menu : MonoBehaviour
 
     public void LoadGame(){
 
-        SceneManager.LoadScene("Game");
-        Audio_Manager.instance.Stop ("Theme");
-        Audio_Manager.instance.Play ("Fight");
+        if (PlayerPrefs.GetInt ("TutorialPlayed") == 0){
+        
+            SceneManager.LoadScene("Tutorial");
+            Audio_Manager.instance.Stop ("Theme");
+            Audio_Manager.instance.Play ("Chill");
+        }else{
+
+            SceneManager.LoadScene("Game");
+            Audio_Manager.instance.Stop ("Theme");
+            Audio_Manager.instance.Play ("Fight");
+        }
+        
 
     }
 
