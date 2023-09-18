@@ -14,6 +14,8 @@ public class Options_Menu : MonoBehaviour
     int resolution_index;
 
     private void Start() {
+        
+        Application.targetFrameRate = 60;
 
         GetResolutionsOptions();
 
@@ -65,6 +67,7 @@ public class Options_Menu : MonoBehaviour
         }
 
         resolution_dropdown.AddOptions(options);
+
     }
 
     public void SetVolume (float volume){

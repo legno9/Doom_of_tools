@@ -1,5 +1,8 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
+using System.Collections.Generic;
+using TMPro;
 
 public class Game_Menu : MonoBehaviour
 { 
@@ -8,12 +11,11 @@ public class Game_Menu : MonoBehaviour
     public Button_Anims house_buton;
     public Button_Anims options_button;      
     public GameObject options;   
+    public GameObject confirmation;   
+    public GameObject end_game_object;   
+    public TextMeshProUGUI eng_game_text;   
     private bool undo_button_state = false; 
 
-    private void Start() {
-
-        Application.targetFrameRate = 60;
-    } 
     private void Update() {
         
         if (Input.GetKeyDown(KeyCode.Space) || Input.GetKeyDown(KeyCode.KeypadEnter)){
@@ -32,7 +34,7 @@ public class Game_Menu : MonoBehaviour
     public void EndTurn(){
 
         end_turn_button.SetButtonActive(false);
-        StartCoroutine(Turns_Manager.Instance.EnemyTurn());
+        StartCoroutine(Turns_Manager.Instance.EnemyTurn( ));
         Cards_Manager.Instance.DiscardHand();
 
         if (Cards_Manager.Instance.card_being_clicked != null){
@@ -48,35 +50,86 @@ public class Game_Menu : MonoBehaviour
 
     }
 
+    public void StopGame( bool stop){
+
+        if (stop){
+            
+            // Audio_Manager.instance.Pause("Theme");
+            Time.timeScale = 0;
+
+            if (undo_move_buton.active == true){
+                undo_move_buton.SetButtonActive(stop);
+                undo_button_state = true;
+            }
+
+        }else{
+
+            // Audio_Manager.instance.UnPause("Theme");
+            Time.timeScale = 1;
+
+            if (undo_button_state == true){
+                undo_move_buton.SetButtonActive(true);
+            }
+        }
+        
+        house_buton.SetButtonActive(!stop);
+        options_button.SetButtonActive(!stop);
+    }
+
     public void OpenOptions(){
 
         options.SetActive(true);
-        Audio_Manager.instance.Pause("Theme");
-        Time.timeScale = 0;
-        house_buton.SetButtonActive(false);
-        options_button.SetButtonActive(false);
-
-        if (undo_move_buton.active == true){
-            undo_move_buton.SetButtonActive(false);
-            undo_button_state = true;
-        }
+        StopGame( true);
     }
 
-    public void QuitOptions(){
+    public void CloseOptions(){
 
         options.SetActive(false);
-        Audio_Manager.instance.UnPause("Theme");
-        Time.timeScale = 1;
-        house_buton.SetButtonActive(true);
-        options_button.SetButtonActive(true);
+        StopGame(false);
+    }
 
-        if (undo_button_state == true){
-            undo_move_buton.SetButtonActive(true);
-        }
+    public void OpenConfirmation(){
+
+        confirmation.SetActive(true);
+        StopGame(true);
+    }
+
+    public void CloseConfirmation(){
+
+        confirmation.SetActive(false);
+        StopGame(false);
     }
 
     public void BackToStart(){
 
+        StopGame(false);
         SceneManager.LoadScene("Start_Menu");
+        Audio_Manager.instance.Stop("Fight");
+        Audio_Manager.instance.Play("Theme");
+    }
+
+    public IEnumerator EndGame(bool victory){
+        
+        yield return new WaitForSeconds(2f);
+        StopGame(true);
+        Audio_Manager.instance.Stop("Fight");
+
+        if (victory){
+            eng_game_text.text = "Victory";
+            Audio_Manager.instance.Play("Victory");
+        }else{
+            eng_game_text.text = "Loose";
+            Audio_Manager.instance.Play("Loose");
+        }
+        
+        end_game_object.SetActive(true);
+        
+    }
+
+    public void RestartGame(){
+
+        StopGame(false);
+        SceneManager.LoadScene("Game");
+        Audio_Manager.instance.Play ("Fight");
     }
 }

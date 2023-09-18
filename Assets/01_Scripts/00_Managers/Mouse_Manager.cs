@@ -26,6 +26,7 @@ public class Mouse_Manager : MonoBehaviour
     private List<Tile_Overlay> path = new();
     private List<Tile_Overlay> movement_range = new();
     public Button_Anims undo_button;
+    public bool tutorial;
     
 
     private void Awake() { 
@@ -76,6 +77,7 @@ public class Mouse_Manager : MonoBehaviour
     private void CheckAttackRange( Tile_Overlay tile_to_check){
 
         attack_range_selected.Clear();
+        
 
         if (attack_range.Contains(tile_to_check)){
             
@@ -128,6 +130,7 @@ public class Mouse_Manager : MonoBehaviour
             character_clicked.Attack(attack_range_selected);
             Cards_Manager.Instance.DiscardCard(card_on_use);
             card_on_use = null;
+            character_moved = null; //Cant undo movement 
             ClearAndHide();
         }
        
@@ -158,14 +161,13 @@ public class Mouse_Manager : MonoBehaviour
                 HideTiles();
 
                 character_moved = character_clicked;
-                character_clicked.last_movement_path.AddRange(path);
-                character_clicked.action_used = true;
-                character_clicked.last_active_tile = character_clicked.active_tile;
+                character_moved.last_movement_path.Clear();
+                character_moved.last_movement_path.AddRange(path);
 
                 StartCoroutine(character_clicked.MoveAlongPath(path));
                 
                 selector_sprite.enabled = true;
-                Mouse_Manager.Instance.undo_button.SetButtonActive(true);
+                undo_button.SetButtonActive(true);
             } 
         }
     }
@@ -182,6 +184,7 @@ public class Mouse_Manager : MonoBehaviour
                         HideTiles(); //If a new character is clicked
                         character_clicked = character.GetComponent<Characters_Basic>();
                         selector_sprite.enabled = false; 
+                        Audio_Manager.instance.Play("Character_Selected");
                     }
 
                     else{
@@ -203,32 +206,42 @@ public class Mouse_Manager : MonoBehaviour
 
         if ((Input.GetMouseButtonDown(0) && !movement_range.Contains(tile_to_check) && !attack_range.Contains(tile_to_check) ) || (Input.GetMouseButtonDown(1) ) ){
             
+            if (character_moved is not null){
+
+                undo_button.SetButtonActive(true);
+            }
+
             if (card_on_use is not null){
 
                 StartCoroutine(card_on_use.ReturnToHand());
                 
-            }else{
-
-                ClearAndHide();
-                character_clicked = null;
-
             }
+
+            ClearAndHide();
+            character_clicked = null;
+
+            
         }
     }
     private void CheckStopAll(){
 
         if ( Input.GetMouseButtonDown(1) ){
             
+            if (character_moved is not null){
+                
+                undo_button.SetButtonActive(true);
+            }
+
             if (card_on_use is not null){
 
                 StartCoroutine(card_on_use.ReturnToHand());
                 
-            }else{
-
-                ClearAndHide();
-                character_clicked = null;
-
             }
+
+            ClearAndHide();
+            character_clicked = null;
+
+            
         }
 
     }
@@ -282,6 +295,23 @@ public class Mouse_Manager : MonoBehaviour
 
             tile.HideTile();
         }
+    }
+
+    public void CheckEndGame (){
+        
+        if (!tutorial){
+            if (Mouse_Manager.Instance.ally_characters_tile.Count == 0){
+                
+                StartCoroutine(Turns_Manager.Instance.menu_functions.EndGame(victory: false));
+            }
+            else if (Mouse_Manager.Instance.enemy_characters_tile.Count == 0){
+                    
+                StartCoroutine(Turns_Manager.Instance.menu_functions.EndGame(victory: true));
+            }
+        }else{
+            
+        }
+        
     }
     
 }

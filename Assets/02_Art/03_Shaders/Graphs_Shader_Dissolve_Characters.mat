@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Graphs_Shader_Dissolve
+  m_Name: Graphs_Shader_Dissolve_Characters
   m_Shader: {fileID: -6465566751694194690, guid: 226301122286d38499890aa044b3b75b, type: 3}
   m_ValidKeywords: []
   m_InvalidKeywords: []
@@ -38,10 +38,10 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _Fade: 0.015987188
+    - _Fade: 1
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _Scale: 0.23
+    - _Scale: 60
     m_Colors:
     - _Color: {r: 0.09411765, g: 0.79607844, b: 1, a: 1}
   m_BuildTextureStacks: []

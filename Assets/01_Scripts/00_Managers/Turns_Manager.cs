@@ -10,6 +10,7 @@ public class Turns_Manager : MonoBehaviour
     public static Turns_Manager Instance {get { return manager_instance; } }
     [System.NonSerialized] public bool next_enemy = false;
     List<Transform> enemies;
+    public Game_Menu menu_functions;
 
     private void Awake() { 
         
@@ -28,6 +29,7 @@ public class Turns_Manager : MonoBehaviour
             Mouse_Manager.Instance.GetCharacterScript((Names.character) Enum.Parse(typeof(Names.character), ally.name)).action_used = true;
         }
 
+        menu_functions.undo_move_buton.SetButtonActive(false);
         enemies = new List<Transform>(Mouse_Manager.Instance.enemy_characters_tile.Keys);
 
         foreach (Transform enemy in enemies){
@@ -36,11 +38,12 @@ public class Turns_Manager : MonoBehaviour
 
             try{
                 controller = (Enemy_Basics) enemy.GetComponent(typeof(Enemy_Basics)); //If the enemy dies, next enemy
+                
             } 
             catch{
                 continue;
             }
-            
+        
             yield return new WaitForSeconds(0.5f);
 
             next_enemy = false;

@@ -48,8 +48,9 @@ MonoBehaviour:
   name_: 0
   health: 0
   movement: 0
-  speed: 4
+  speed: 8
   ally: 1
+  dissolve: {fileID: 2100000, guid: 3101d2d0a78815d4db122cd1e593ecb9, type: 2}
 --- !u!1 &3174657531311994080
 GameObject:
   m_ObjectHideFlags: 0
@@ -215,8 +216,8 @@ Canvas:
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
   m_AdditionalShaderChannelsFlag: 0
-  m_SortingLayerID: -1835118203
-  m_SortingOrder: 2
+  m_SortingLayerID: -2037446021
+  m_SortingOrder: -1
   m_TargetDisplay: 0
 --- !u!114 &3174657531392813438
 MonoBehaviour:

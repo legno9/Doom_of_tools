@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,12 +12,15 @@ public class Health_Bar : MonoBehaviour
     private float character_health_points;
     public Health_System character_health_system;
     public Image fill;
+    public Image border;
+    public Material dissolve;
+    private Characters_Basic basics;
     
 
     void Start(){ 
-
-        character_health_points = GetComponentInParent<Characters_Basic>().health;
-        character_health_system = GetComponentInParent<Characters_Basic>().health_system;
+        basics = GetComponentInParent<Characters_Basic>();
+        character_health_points = basics.health;
+        character_health_system = basics.health_system;
         
         int health_blocks_needed = (int)(character_health_points/10);
 
@@ -54,7 +58,17 @@ public class Health_Bar : MonoBehaviour
 
             if (character_health_system.health <= 0){
 
-                GetComponentInParent<Characters_Basic>().Dead();
+                basics.Dead();
+                border.material = dissolve;
+                Destroy(separator_end);
+                foreach (GameObject separator in separators_list)
+                {
+                    Destroy(separator);
+                }
+
+                Destroy(separator_end);
+                StartCoroutine(DissolveHealth());
+
 
             }else{
                 
@@ -63,5 +77,20 @@ public class Health_Bar : MonoBehaviour
             }
         }
 
+    }
+
+    public IEnumerator DissolveHealth(){
+        
+        float fade = 1;
+        border.material.SetFloat("_Fade", fade);
+
+        while (fade >= 0 ){
+
+            border.material.SetFloat("_Fade", fade);
+
+            fade -= Time.deltaTime;
+
+            yield return new WaitForEndOfFrame();
+        }
     }
 }

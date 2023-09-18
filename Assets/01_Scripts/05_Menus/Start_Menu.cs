@@ -17,7 +17,7 @@ public class Start_Menu : MonoBehaviour
 
     private void Start() {
         
-        Application.targetFrameRate = 60;
+        Audio_Manager.instance.Play ("Theme");
 
     }
     private void Update() {
@@ -38,6 +38,8 @@ public class Start_Menu : MonoBehaviour
     public void LoadGame(){
 
         SceneManager.LoadScene("Game");
+        Audio_Manager.instance.Stop ("Theme");
+        Audio_Manager.instance.Play ("Fight");
 
     }
 

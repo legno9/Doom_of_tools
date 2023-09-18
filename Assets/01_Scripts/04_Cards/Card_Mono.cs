@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.EventSystems;
@@ -30,18 +31,21 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public TMP_Text cost_text;
     public TMP_Text description_text;
     public TMP_Text character_text;
+    public Image cards_image;
+    public List<Sprite> availaible_images;
     private Cards_Manager cards_manager = Cards_Manager.Instance;
 
     private void Start() {
-        
-        card_data = Cards_Data.cards_list[this_id];
 
+        card_data = Cards_Data.cards_list[this_id];
+        
         id = card_data.id;
         attack = card_data.attack;
-        card_name = card_data.card_name;
+        card_name = card_data.card_name.ToString();
         character = card_data.character;
         cost = card_data.cost;
         description = card_data.description;
+        cards_image.sprite = availaible_images[(int)card_data.card_name];
 
         name_text.text = card_name;
         cost_text.text = cost.ToString();
@@ -53,7 +57,6 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
         Vector3 start_position = transform.position;
         Vector3 end_position = character_basics.transform.position;
-
 
         float frames_taken = 0;
         float frames_needed = 20;
@@ -144,6 +147,7 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             yield return new WaitForEndOfFrame();
         }
 
+        
         cards_manager.attack_preview_availaible = true;
         cards_manager.card_being_clicked = null;
         discard.text = cards_manager.discard_deck.Count.ToString();
@@ -189,7 +193,7 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         if ( on_hand && pointerEventData.button == PointerEventData.InputButton.Left){
             
             animator.Play("Card_Clicked");
-
+            Audio_Manager.instance.Play("Card_Hover");
             if (cards_manager.card_being_clicked is not null){ //If multiple cards are clicked at the same time
 
                 StartCoroutine(cards_manager.card_being_clicked.ReturnToHand());
@@ -202,6 +206,7 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
             if (cards_manager.IsEnoughMana(cost)){
                 
                 StartCoroutine(CardClicked());
+                
 
                 if (Mouse_Manager.Instance.card_on_use is not null){ //If there is already one 
 
@@ -219,6 +224,7 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
 
     public IEnumerator CardClicked(){
 
+        Mouse_Manager.Instance.undo_button.SetButtonActive(false);
         yield return new WaitForSeconds(0.4f); //Wait for clicked anim
         yield return new WaitUntil(() => Mouse_Manager.Instance.card_on_use == null);
 
@@ -235,7 +241,7 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
     public IEnumerator ReturnToHand()
     {   
         yield return new WaitUntil(() => on_character == true);
-
+        Audio_Manager.instance.Play("Card_In");
         on_character = false;
         Mouse_Manager.Instance.ClearAndHide();
         transform.SetParent(cards_manager.hand_cards);
@@ -243,12 +249,11 @@ public class Card_Mono: MonoBehaviour, IPointerEnterHandler, IPointerExitHandler
         transform.SetSiblingIndex(card_sibling_index);
 
         cards_manager.IsEnoughMana(-cost);
-        
     }
 
 
     public IEnumerator DissolveCard(){
-
+        
         Image visual = visuals.GetComponent<Image>();
         visual.material = dissolve_material;
 

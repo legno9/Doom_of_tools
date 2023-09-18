@@ -55,6 +55,8 @@ MonoBehaviour:
   separator_end: {fileID: 8568741265195127435}
   separator: {fileID: 21300000, guid: e18e6660532f5f749867d41ddbcac646, type: 3}
   fill: {fileID: 8568741265318584220}
+  border: {fileID: 8568741265439482406}
+  dissolve: {fileID: 2100000, guid: 9e5a04796b9e4234190d75d34a362b38, type: 2}
 --- !u!1 &8568741265195127435
 GameObject:
   m_ObjectHideFlags: 0

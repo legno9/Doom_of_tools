@@ -6,9 +6,9 @@ public class Names{
         Microwave,
         Mill,
         Pot,
-        Roller_Blade,
+        Cutter,
         Rolling,
-        Salt_Shaker,
+        SaltShaker,
         Spatula,
         Spoon,
     }
@@ -66,6 +66,21 @@ public class Names{
         attack_04,
         attack_05,
         attack_06,
+    }
+
+    public enum attack_names{
+
+        none,
+        Sweep,
+        DeathMark,
+        Headbutt,
+        Stomp,
+        Overload,
+        Hypershot,
+        Splash,
+        Overflow,
+        Sharpshooter,
+        Meatball
     }
 
 }

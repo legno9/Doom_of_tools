@@ -13,7 +13,7 @@ public class Cards_Manager : MonoBehaviour
     private Dictionary<Card_Mono, Card_Basics> hand_deck = new();
     public List<Card_Basics> discard_deck = new();
     public Transform canvas;
-    private int initial_deck_size = 12;
+    private int initial_deck_size = 30;
     private int draw_quantity = 5; //If its more modify hand_cards layout
     public Transform hand_cards;
     public Card_Mono card_prefab;
@@ -84,9 +84,10 @@ public class Cards_Manager : MonoBehaviour
                 draw_deck_number.text = draw_deck.Count.ToString();
 
                 cards_drawed += 1;
+                Audio_Manager.instance.Play("Card_Out");
 
 
-            }else{ //Refill
+            }else if (discard_deck.Count != 0){ //Refill
                 
                 RefillDrawDeck();
 
@@ -137,7 +138,8 @@ public class Cards_Manager : MonoBehaviour
 
         if (left_mana - mana_used < 0){
             
-            mana.color = Color.red;
+            Audio_Manager.instance.Play("Error");
+            mana.GetComponentInParent<Animator>().SetTrigger("Error");
             return false;
 
         }else{
@@ -174,7 +176,7 @@ public class Cards_Manager : MonoBehaviour
 
             
         }
-
+        Audio_Manager.instance.Play("Card_Shuffle");
         Shuffle();
     }
 
@@ -220,7 +222,7 @@ public class Cards_Manager : MonoBehaviour
     }
 
     private void Shuffle(){
-
+        
         for (var i = 0; i < draw_deck.Count - 1; ++i)
         {
             int r = Random.Range(i, draw_deck.Count);

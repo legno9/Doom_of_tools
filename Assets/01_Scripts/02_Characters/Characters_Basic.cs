@@ -18,12 +18,16 @@ public class Characters_Basic : MonoBehaviour
     public Names.character name_;
     public int health;
     public int movement;
-    public int speed = 8;
+    public int speed;
     public bool ally;
+    public bool dying = false;
     [System.NonSerialized]public bool action_used = false;
     [System.NonSerialized]public int damage_amount;
     [System.NonSerialized]public int heal_amount;
     [System.NonSerialized]public bool select_all_tiles;
+    public Material dissolve;
+    private SpriteRenderer visuals;
+    
     
 
     private void Awake() {
@@ -33,6 +37,7 @@ public class Characters_Basic : MonoBehaviour
         health_system = new Health_System(health, this);
         health_bar = GetComponentInChildren<Health_Bar>();
         StartCoroutine(SetCharactersStartTile());  
+        visuals = transform.GetComponentInChildren<SpriteRenderer>();
     } 
 
     IEnumerator SetCharactersStartTile() {
@@ -55,8 +60,12 @@ public class Characters_Basic : MonoBehaviour
         
         Mouse_Manager.Instance.character_clicked = null;
         Mouse_Manager.Instance.moving = true;
-        animator.SetBool("Walking",true);
         Cards_Manager.Instance.end_turn_button.SetButtonActive(false);
+
+        animator.SetBool("Walking",true);
+        action_used = true;
+
+        last_active_tile = active_tile;
 
         while (movement_path.Count > 0){
 
@@ -67,6 +76,7 @@ public class Characters_Basic : MonoBehaviour
             if (Vector2.Distance(transform.position, movement_path[0].transform.position) < 0.0001f){
                 
                 PositionCharacterOnTile(movement_path[0]);
+                Audio_Manager.instance.Play("Woosh");
                 movement_path[0].SetArrowSprite(Character_Arrow.arrow_direction.None);
                 movement_path.RemoveAt(0);
             }
@@ -140,13 +150,15 @@ public class Characters_Basic : MonoBehaviour
     public void Attack ( List<Tile_Overlay> attack_range_selected){
 
         action_used = true;
-        List<Transform> characters_to_attack = new List<Transform> (total_characters_tile.Keys);
+        
+        List<Transform> characters_to_attack = new List<Transform> (enemy_characters_tile.Keys);
 
         foreach ( Transform c in characters_to_attack){
             foreach ( Tile_Overlay t in attack_range_selected){
                 if (c.position == t.transform.position){  // If any tile position its the same as any character position, do damage
                     
                     c.GetComponent<Characters_Basic>().health_system.Damage(damage_amount);
+                    Audio_Manager.instance.Play("Hit");
                     
                 }
             } 
@@ -168,21 +180,43 @@ public class Characters_Basic : MonoBehaviour
 
     public void Dead (){
         
+        dying = true;
         Mouse_Manager.Instance.total_characters_tile.Remove(transform);
-        
+        StartCoroutine(DissolveCharacter());
+
         if (ally){
 
             Mouse_Manager.Instance.ally_characters_tile.Remove(transform);
-            Cards_Manager.Instance.RemoveCardsCharacterDead(this);
+            Cards_Manager.Instance.RemoveCardsCharacterDead(this);  
             
         }else{
 
             Mouse_Manager.Instance.enemy_characters_tile.Remove(transform);
+            Turns_Manager.Instance.next_enemy = true;
+
         }
 
+        Mouse_Manager.Instance.CheckEndGame();
         active_tile.blocked = false;
         
-        
+    }
+
+    public IEnumerator DissolveCharacter(){
+
+        Audio_Manager.instance.Play("Dissolve");
+        float fade = 1;
+        visuals.material = dissolve;
+        visuals.material.SetFloat("_Fade", fade);
+
+        while (fade >= 0 ){
+
+            visuals.material.SetFloat("_Fade", fade);
+
+            fade -= Time.deltaTime;
+
+            yield return new WaitForEndOfFrame();
+        }
+
         Destroy(this.gameObject);
     }
 }

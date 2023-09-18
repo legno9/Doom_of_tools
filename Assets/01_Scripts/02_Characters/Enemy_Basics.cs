@@ -9,13 +9,13 @@ public abstract class Enemy_Basics: MonoBehaviour{
     private Character_Arrow character_arrow = new();
     protected Dictionary<Transform ,Vector2Int> ally_characters_tile;
     protected Dictionary<Transform ,Vector2Int> total_characters_tile;
-    protected Characters_Basic basics;
+    public Characters_Basic basics;
     protected List<Tile_Overlay> movement_range;
     protected List <Tile_Overlay> path;
     protected Tile_Overlay desired_tile_move;
     protected Names.attack_selector[] available_attacks;
     protected Dictionary< Tile_Overlay, Names.attack_selector > attacks_preference = new();
-    public List<Tile_Overlay> attack_range;
+    protected List<Tile_Overlay> attack_range;
     protected List<Tile_Overlay> attack_range_selected = new();
     protected Vector2Int attack_position;
     protected bool can_attack = false;
@@ -25,6 +25,11 @@ public abstract class Enemy_Basics: MonoBehaviour{
     public IEnumerator StartController() {
         
         Reset();
+
+        if (basics.dying == true){
+            Turns_Manager.Instance.next_enemy = true;
+            yield break;
+        }
         CheckAttacks();
         
         
@@ -86,28 +91,27 @@ public abstract class Enemy_Basics: MonoBehaviour{
     protected virtual void GetNearestAlly(){
 
         int shortest_distance = 10;
-
-        Names.attack_selector attack_type = Names.attack_selector.none;
+        Vector2Int temp_attack_position;
+        Names.attack_selector selected_attack_type = Names.attack_selector.none;
 
         foreach (Tile_Overlay tile in attacks_preference.Keys){
-            
-            if (attack_type == Names.attack_selector.none ){ //From the most important attack to the least
-                foreach ( Vector2Int ally_position in ally_characters_tile.Values){
+            foreach ( Vector2Int ally_position in ally_characters_tile.Values){
 
-                    int tiles_number = basics.TilesOfDistance(ally_position, tile.grid2D_location);
+                int tiles_number = basics.TilesOfDistance(ally_position, tile.grid2D_location);
 
-                    if ( tiles_number < shortest_distance){
-                                                
-                        attack_type = attacks_preference[tile];
-                        attack_position = ally_position - tile.grid2D_location + basics.active_tile.grid2D_location;
+                if ( tiles_number < shortest_distance){
+                                            
+                    selected_attack_type = attacks_preference[tile];
+                    temp_attack_position = ally_position - tile.grid2D_location + basics.active_tile.grid2D_location;
+
+                    if (Tiles_Manager.Instance.map.ContainsKey(temp_attack_position) && !Tiles_Manager.Instance.map[temp_attack_position].blocked){
+
                         shortest_distance = tiles_number;
-                        
+                        attack_position = temp_attack_position;
                     }
+                    
                 }
-            }else{
-
-                return;
-            }  
+            }
         }  
     }
 
@@ -126,12 +130,6 @@ public abstract class Enemy_Basics: MonoBehaviour{
                 desired_tile_move = possible_tile;
 
             }  
-        }
-
-        if (desired_tile_move.grid2D_location != attack_position && lowest_distance <= basics.movement){ //Out of map ///Recheck///////
-
-            //Shoulr revise next possible attack position
-            //If there isnt any posible attack move to create one
         }
 
         path = path_finder.FindPath(basics.active_tile, desired_tile_move, basics.movement);
@@ -172,6 +170,7 @@ public abstract class Enemy_Basics: MonoBehaviour{
 
             if (Vector2.Distance(transform.position, movement_path[0].transform.position) < 0.0001f){
                 
+                Audio_Manager.instance.Play("Woosh");
                 basics.PositionCharacterOnTile(movement_path[0]);
                 movement_path[0].SetArrowSprite(Character_Arrow.arrow_direction.None);
                 movement_path.RemoveAt(0);
@@ -187,10 +186,12 @@ public abstract class Enemy_Basics: MonoBehaviour{
 
     protected IEnumerator Attack (){
 
-        List<Transform> to_attack = new List<Transform>(total_characters_tile.Keys);
+        List<Transform> to_attack = new List<Transform>(ally_characters_tile.Keys);
         Attacks_Manager.Instance.SetAttackBasics();
             
         if (basics.select_all_tiles is true){
+
+            attack_range_selected.AddRange(attack_range);
 
             foreach (Tile_Overlay tile in attack_range){
                 
@@ -199,12 +200,12 @@ public abstract class Enemy_Basics: MonoBehaviour{
             }
                                 
         }else{
-
+            tile_attacking.SetTileDirection(basics.active_tile);
             foreach (Tile_Overlay tile in attack_range){
                 
                 tile.SetTileDirection(basics.active_tile);
                 tile.ShowTile(tile.red_color); 
-                    
+                        
                 if (tile.direction == tile_attacking.direction){
                     
                     tile.SetHitSprite(selected:true);
@@ -221,10 +222,11 @@ public abstract class Enemy_Basics: MonoBehaviour{
         yield return new WaitForSeconds(1.5f);
 
         foreach ( Transform c in to_attack){
-            foreach ( Tile_Overlay t in attack_range){
-                if (c.position == t.transform.position){  // If any tile position its the same as any character position, do damage ///////////////////////Error killed
+            foreach ( Tile_Overlay t in attack_range_selected){
+                if (c.position == t.transform.position){  // If any tile position its the same as any character position, do damage 
                     
                     c.GetComponent<Characters_Basic>().health_system.Damage(basics.damage_amount);
+                    Audio_Manager.instance.Play("Hit");
                     
                 }
             } 
@@ -237,13 +239,14 @@ public abstract class Enemy_Basics: MonoBehaviour{
 
     protected virtual void Reset(){
 
+        basics = gameObject.GetComponent<Characters_Basic>();
         ally_characters_tile = Mouse_Manager.Instance.ally_characters_tile;
         total_characters_tile = Mouse_Manager.Instance.total_characters_tile;
-        basics = gameObject.GetComponent<Characters_Basic>();
         can_attack = false;
         attacks_preference.Clear();
         attack_range_selected.Clear();
         movement_range = range_finder.GetAdjacentTiles(basics.active_tile, basics.movement);
+        attack_position = new Vector2Int(-10,-10);
     }
 
     public void HideTiles(){

@@ -23,7 +23,7 @@ public class Attacks_Manager : MonoBehaviour{
     int heal_amount;
 
     public void Attacks_Creator ( Names.tiles_selector tiles_selector, int damage = 0, int heal = 0, int range = 0, int rows = 0, Names.direction_name direction = 0, int ignore_tiles = 0, 
-    Names.status_effect status_effect = 0, int status_quantity = 0){
+    Names.status_effect status_effect = 0, int status_quantity = 0, bool select_all_tiles_ = false){
         
         attack_tiles.Clear();
         damage_amount = damage;
@@ -38,6 +38,7 @@ public class Attacks_Manager : MonoBehaviour{
 
             case Names.tiles_selector.adjacent_tiles:
                 attack_tiles = range_finder.GetAdjacentTiles(character_attacking.active_tile, range );
+                select_all_tiles = select_all_tiles_;
                 break;
 
             case Names.tiles_selector.vertical_tiles:
@@ -74,11 +75,11 @@ public class Attacks_Manager : MonoBehaviour{
 
             if (attack == Names.attack_selector.attack_01){ // 1º Attack
 
-                Attacks_Creator ( Names.tiles_selector.vertical_tiles,  damage:1, range:9 );
+                Attacks_Creator ( Names.tiles_selector.vertical_tiles,  damage:1, range:3, ignore_tiles: 2 );
             }
             else if (attack == Names.attack_selector.attack_02){ // 2º Attack
 
-                Attacks_Creator ( Names.tiles_selector.vertical_tiles,  ignore_tiles: 2, damage:2, range:1 );
+                Attacks_Creator ( Names.tiles_selector.adjacent_tiles,  damage:3, range:1 );
             }
 
         }
@@ -87,18 +88,57 @@ public class Attacks_Manager : MonoBehaviour{
 
             if (attack == Names.attack_selector.attack_01){ // 1º Attack
 
-                Attacks_Creator (  Names.tiles_selector.horizontal_tiles, damage:1 , range:3, ignore_tiles:2  );
+                Attacks_Creator (  Names.tiles_selector.adjacent_tiles, damage:1 , range:1); 
             }
             else if (attack == Names.attack_selector.attack_02){ // 2º Attack
 
-                Attacks_Creator (  Names.tiles_selector.surrounding_tiles, damage:1 , range:2);    
+                Attacks_Creator (  Names.tiles_selector.surrounding_tiles, damage:1 , range:1);    
+            }
+
+        }
+
+        else if (character == Names.character.Microwave){
+
+            if (attack == Names.attack_selector.attack_01){ // 1º Attack
+
+                Attacks_Creator (  Names.tiles_selector.surrounding_tiles, damage:2 , range:2); 
+            }
+            else if (attack == Names.attack_selector.attack_02){ // 2º Attack
+
+                Attacks_Creator (  Names.tiles_selector.adjacent_tile, damage:2 , range:2, direction: Names.direction_name.Bottom);    
+            }
+
+        }
+
+        else if (character == Names.character.Pot){
+
+            if (attack == Names.attack_selector.attack_01){ // 1º Attack
+
+                Attacks_Creator (  Names.tiles_selector.horizontal_tiles, damage:1 , range:3, ignore_tiles:1  );
+            }
+            else if (attack == Names.attack_selector.attack_02){ // 2º Attack
+
+                Attacks_Creator (  Names.tiles_selector.adjacent_tiles, damage:1 , range:2, select_all_tiles_: true); 
+            }
+
+        }
+
+        else if (character == Names.character.Spoon){
+
+            if (attack == Names.attack_selector.attack_01){ // 1º Attack
+
+                Attacks_Creator ( Names.tiles_selector.vertical_tiles,  ignore_tiles: 3, damage:2, range:1 );
+            }
+            else if (attack == Names.attack_selector.attack_02){ // 2º Attack
+
+                Attacks_Creator ( Names.tiles_selector.horizontal_tiles,  damage:1 , range:3, ignore_tiles:2 );
             }
 
         }
 
         foreach( var tile in attack_tiles ){
         
-            tile.ShowTile(tile.red_color, 0.5f);
+            tile.ShowTile(tile.red_color, 0.3f);
         } 
     }
 
@@ -131,12 +171,39 @@ public class Attacks_Manager : MonoBehaviour{
 
             if (attack == Names.attack_selector.attack_01){
 
-                Attacks_Creator (  Names.tiles_selector.multiple_hortizontal_tiles, damage:1 , range:3, rows:2, ignore_tiles:3);
+                Attacks_Creator (  Names.tiles_selector.multiple_hortizontal_tiles, damage:1 , range:3, rows:2, ignore_tiles:2);
                 return attack_tiles;
             }
         }
 
         else if (character.name_ == Names.character.Mill){
+
+            if (attack == Names.attack_selector.attack_01){
+
+                Attacks_Creator (  Names.tiles_selector.vertical_tiles, ignore_tiles:2, damage:2 , range:1);
+                return attack_tiles;
+            }
+        }
+
+        else if (character.name_ == Names.character.Rolling){
+
+            if (attack == Names.attack_selector.attack_01){
+
+                Attacks_Creator (  Names.tiles_selector.adjacent_tiles, damage:2 , range:1);
+                return attack_tiles;
+            }
+        }
+
+        else if (character.name_ == Names.character.Cutter){
+
+            if (attack == Names.attack_selector.attack_01){
+
+                Attacks_Creator (  Names.tiles_selector.vertical_tiles, damage:1 , range:3);
+                return attack_tiles;
+            }
+        }
+
+        else if (character.name_ == Names.character.SaltShaker){
 
             if (attack == Names.attack_selector.attack_01){
 
