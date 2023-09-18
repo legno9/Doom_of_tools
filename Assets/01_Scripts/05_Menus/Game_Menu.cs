@@ -24,7 +24,7 @@ public class Game_Menu : MonoBehaviour
             }         
         }
 
-        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.Return)){
+        if (Input.GetKeyDown(KeyCode.LeftShift) || Input.GetKeyDown(KeyCode.Backspace)){
             if (undo_move_buton.active == true){
                 UndoMove();
             }         
@@ -102,10 +102,23 @@ public class Game_Menu : MonoBehaviour
 
     public void BackToStart(){
 
-        StopGame(false);
-        SceneManager.LoadScene("Start_Menu");
-        Audio_Manager.instance.Stop("Fight");
-        Audio_Manager.instance.Play("Theme");
+        if (PlayerPrefs.GetInt ("TutorialPlayed") == 0){
+
+            PlayerPrefs.SetInt ("TutorialPlayed", 1);
+            StopGame(false);
+            SceneManager.LoadScene("Game");
+            Audio_Manager.instance.Stop("Theme");
+            Audio_Manager.instance.Play("Fight");
+            
+
+        }else{
+
+            StopGame(false);
+            SceneManager.LoadScene("Start_Menu");
+            Audio_Manager.instance.Stop("Fight");
+            Audio_Manager.instance.Play("Theme");
+        }
+        
     }
 
     public IEnumerator EndGame(bool victory){
@@ -113,6 +126,7 @@ public class Game_Menu : MonoBehaviour
         yield return new WaitForSeconds(2f);
         StopGame(true);
         Audio_Manager.instance.Stop("Fight");
+        Audio_Manager.instance.Stop("Chill");
 
         if (victory){
             eng_game_text.text = "Victory";
@@ -128,8 +142,20 @@ public class Game_Menu : MonoBehaviour
 
     public void RestartGame(){
 
-        StopGame(false);
-        SceneManager.LoadScene("Game");
-        Audio_Manager.instance.Play ("Fight");
+        if (PlayerPrefs.GetInt ("TutorialPlayed") == 0){
+
+            PlayerPrefs.SetInt ("TutorialPlayed", 0);
+            StopGame(false);
+            SceneManager.LoadScene("Tutorial");
+            Audio_Manager.instance.Play ("Chill");
+            
+        }else{
+
+            PlayerPrefs.SetInt ("TutorialPlayed", 1);
+            StopGame(false);
+            SceneManager.LoadScene("Game");
+            Audio_Manager.instance.Play ("Fight");
+        }
+        
     }
 }

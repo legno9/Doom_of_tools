@@ -1757,7 +1757,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1001843719798786958, guid: 26862c5d39d2c394d8bddd595d21074d, type: 3}
       propertyPath: m_text
-      value: Exit
+      value: Next
       objectReference: {fileID: 0}
     - target: {fileID: 1001843719888272754, guid: 26862c5d39d2c394d8bddd595d21074d, type: 3}
       propertyPath: m_SizeDelta.x
@@ -3009,11 +3009,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3174657531211304246, guid: 31483a71f7014ad4da058ee892a57b65, type: 3}
       propertyPath: health
-      value: 70
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 3174657531211304246, guid: 31483a71f7014ad4da058ee892a57b65, type: 3}
       propertyPath: movement
-      value: 2
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 3174657531211304247, guid: 31483a71f7014ad4da058ee892a57b65, type: 3}
       propertyPath: m_RootOrder
@@ -3255,7 +3255,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3174657531211304246, guid: 140785eade1b9c14dabd65ba60778f6f, type: 3}
       propertyPath: health
-      value: 60
+      value: 80
       objectReference: {fileID: 0}
     - target: {fileID: 3174657531211304246, guid: 140785eade1b9c14dabd65ba60778f6f, type: 3}
       propertyPath: dissolve
@@ -4186,6 +4186,22 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4769833452283602092, guid: 0579bcd9d20aadf4697af31f9fe579b5, type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4769833452283602095, guid: 0579bcd9d20aadf4697af31f9fe579b5, type: 3}
+      propertyPath: m_fontSize
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4769833452283602095, guid: 0579bcd9d20aadf4697af31f9fe579b5, type: 3}
+      propertyPath: m_fontSizeMin
+      value: 2.05
+      objectReference: {fileID: 0}
+    - target: {fileID: 4769833452283602095, guid: 0579bcd9d20aadf4697af31f9fe579b5, type: 3}
+      propertyPath: m_fontSizeBase
+      value: 25
+      objectReference: {fileID: 0}
+    - target: {fileID: 4769833452283602095, guid: 0579bcd9d20aadf4697af31f9fe579b5, type: 3}
+      propertyPath: m_enableAutoSizing
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4769833452366641208, guid: 0579bcd9d20aadf4697af31f9fe579b5, type: 3}

@@ -13,7 +13,7 @@ public class Cards_Manager : MonoBehaviour
     private Dictionary<Card_Mono, Card_Basics> hand_deck = new();
     public List<Card_Basics> discard_deck = new();
     public Transform canvas;
-    private int initial_deck_size = 30;
+    private int initial_deck_size;
     private int draw_quantity = 5; //If its more modify hand_cards layout
     public Transform hand_cards;
     public Card_Mono card_prefab;
@@ -26,6 +26,7 @@ public class Cards_Manager : MonoBehaviour
     public int start_mana = 3;
     private int left_mana;
     public Button_Anims end_turn_button;
+    private List<Card_Basics> cards_to_use;
 
 
 
@@ -41,8 +42,16 @@ public class Cards_Manager : MonoBehaviour
 
     private void Start() {
         
+        if (PlayerPrefs.GetInt ("TutorialPlayed") == 0){
+            cards_to_use = Cards_Data.tutorial_list;
+
+        }else{
+            cards_to_use = Cards_Data.cards_list;
+        }
+        initial_deck_size = cards_to_use.Count * 2;
         CreateDeck();
         StartCoroutine(DrawCards());
+        
     
     }
 
@@ -50,9 +59,9 @@ public class Cards_Manager : MonoBehaviour
         
         while (draw_deck.Count < initial_deck_size){
 
-            for (int i = 1; i < Cards_Data.cards_list.Count; i++){
+            for (int i = 1; i < cards_to_use.Count; i++){
 
-                draw_deck.Add(Cards_Data.cards_list[i]); 
+                draw_deck.Add(cards_to_use[i]); 
             }
 
         }

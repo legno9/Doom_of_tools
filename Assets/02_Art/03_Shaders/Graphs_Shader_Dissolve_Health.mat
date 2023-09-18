@@ -39,7 +39,7 @@ Material:
     m_Ints: []
     m_Floats:
     - _ColorMask: 15
-    - _Fade: 0.033119213
+    - _Fade: 0.015924213
     - _QueueControl: 0
     - _QueueOffset: 0
     - _Scale: 0.41
