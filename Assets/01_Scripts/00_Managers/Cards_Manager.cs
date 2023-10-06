@@ -23,7 +23,7 @@ public class Cards_Manager : MonoBehaviour
     public bool attack_preview_availaible = true;
     public bool drawing = false;
     public Card_Mono card_being_clicked;
-    public int start_mana = 3;
+    public int start_mana = 4;
     private int left_mana;
     public Button_Anims end_turn_button;
     private List<Card_Basics> cards_to_use;
@@ -48,7 +48,7 @@ public class Cards_Manager : MonoBehaviour
         }else{
             cards_to_use = Cards_Data.cards_list;
         }
-        initial_deck_size = cards_to_use.Count * 2;
+        initial_deck_size = (cards_to_use.Count * 2) - 2;
         CreateDeck();
         StartCoroutine(DrawCards());
         
@@ -100,6 +100,15 @@ public class Cards_Manager : MonoBehaviour
                 
                 RefillDrawDeck();
 
+            }
+
+            else{
+                
+                if (discard_deck.Count == 0){
+                    drawing = false;
+                    end_turn_button.SetButtonActive( true);
+                    yield break;
+                }
             }
 
             yield return new WaitForSeconds(0.9f);

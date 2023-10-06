@@ -33,6 +33,7 @@ public class Game_Menu : MonoBehaviour
 
     public void EndTurn(){
 
+        Mouse_Manager.Instance.ClearAndHide();
         end_turn_button.SetButtonActive(false);
         StartCoroutine(Turns_Manager.Instance.EnemyTurn( ));
         Cards_Manager.Instance.DiscardHand();
@@ -104,11 +105,10 @@ public class Game_Menu : MonoBehaviour
 
         if (PlayerPrefs.GetInt ("TutorialPlayed") == 0){
 
-            PlayerPrefs.SetInt ("TutorialPlayed", 1);
             StopGame(false);
-            SceneManager.LoadScene("Game");
-            Audio_Manager.instance.Stop("Theme");
-            Audio_Manager.instance.Play("Fight");
+            SceneManager.LoadScene("Start_Menu");
+            Audio_Manager.instance.Stop("Chill");
+            Audio_Manager.instance.Play("Theme");
             
 
         }else{
@@ -117,6 +117,19 @@ public class Game_Menu : MonoBehaviour
             SceneManager.LoadScene("Start_Menu");
             Audio_Manager.instance.Stop("Fight");
             Audio_Manager.instance.Play("Theme");
+        }
+        
+    }
+
+    public void NextGame(){
+
+        if (PlayerPrefs.GetInt ("TutorialPlayed") == 0){
+
+            PlayerPrefs.SetInt ("TutorialPlayed", 1);
+            StopGame(false);
+            SceneManager.LoadScene("Game");
+            Audio_Manager.instance.Stop("Chill");
+            Audio_Manager.instance.Play("Fight");
         }
         
     }

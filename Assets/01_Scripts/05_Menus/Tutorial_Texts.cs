@@ -12,6 +12,7 @@ public class Tutorial_Texts : MonoBehaviour
     "Click the character and move it to other tile.\n They can only move once ",
     "It's possible to undo the movement by pressing the rewind button to the right of the settings.",
     "You can also press left shift or backspace.",
+    "After clicking on a character you can right-click to deselect it ",
     "Important. Once you attack, the character cannot move again.",
     "If you hover your mouse over the cards you can see their attacks. \n Click one. ",
     "If you click on the red tiles, the character will attack. ",

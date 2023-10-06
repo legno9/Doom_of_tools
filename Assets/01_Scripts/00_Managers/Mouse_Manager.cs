@@ -39,9 +39,14 @@ public class Mouse_Manager : MonoBehaviour
             Destroy(this.gameObject);}
 
         selector_sprite = GetComponent<SpriteRenderer>();
+        
     }
 
     private void LateUpdate(){ //Select tiles
+
+        if (Input.GetKeyDown(KeyCode.R)){
+            PlayerPrefs.DeleteAll();
+        }
 
         if (Time.timeScale == 1){ //Not paused
         

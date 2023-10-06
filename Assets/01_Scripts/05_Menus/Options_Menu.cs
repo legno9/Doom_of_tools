@@ -21,11 +21,11 @@ public class Options_Menu : MonoBehaviour
 
         if (PlayerPrefs.GetInt ("SavedPreferences") == 1){
         
-        LoadPreferences();
+            LoadPreferences();
         }else{
 
             resolution_dropdown.value = resolution_index;
-            PlayerPrefs.SetFloat("VolumeValue", 50);
+            PlayerPrefs.SetFloat("VolumeValue", 100);
         }
         resolution_dropdown.RefreshShownValue();
     }
@@ -50,15 +50,18 @@ public class Options_Menu : MonoBehaviour
 
         for (int i = 0; i < avaialable_resolutions.Length; i++)
         {   
+            float resolution_width = avaialable_resolutions[i].width;
+            float resolution_height = avaialable_resolutions[i].height;
+            // float resolution_hz = avaialable_resolutions[i].refreshRate;
 
-            if ((float) System.Math.Round ((float)avaialable_resolutions[i].width/avaialable_resolutions[i].height, 2) == 1.78f ){ //16:9 aspect ratio
+            if ((float) System.Math.Round (resolution_width/resolution_height, 2) == 1.78f && !options.Contains(resolution_width + " x " + resolution_height + "  ")){ //16:9 aspect ratio
 
-                string option = avaialable_resolutions[i].width + " x " + avaialable_resolutions[i].height + "  " + avaialable_resolutions[i].refreshRate + "hz";
+                string option = resolution_width + " x " + resolution_height + "  ";
                 options.Add(option);
 
                 resolutions.Add (avaialable_resolutions[i]);
 
-                if (avaialable_resolutions[i].width == Screen.currentResolution.width && avaialable_resolutions[i].height == Screen.currentResolution.height){
+                if (resolution_width == Screen.currentResolution.width && resolution_height == Screen.currentResolution.height){
 
                     resolution_index = resolutions.Count - 1;
                 }
