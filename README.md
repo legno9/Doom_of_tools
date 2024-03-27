@@ -1,2 +1,2 @@
-ddProject by Ángel Formoso Caamaño in development
+Project by Ángel Formoso Caamaño in development
 Test
