@@ -1076,7 +1076,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Doom of tools
+  m_text: Doom of toolss
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 873da2771f04adc479d08276d406378d, type: 2}
   m_sharedMaterial: {fileID: 2510114704418317847, guid: 873da2771f04adc479d08276d406378d, type: 2}
